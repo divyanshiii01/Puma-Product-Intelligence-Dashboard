@@ -12,15 +12,15 @@ export default function Sidebar() {
           Dashboard
         </div>
 
-        <div className="text-slate-400 px-4 py-3">
+        <div className="text-slate-400 px-4 py-3 hover:bg-slate-800 rounded-xl transition cursor-pointer">
           Products
         </div>
 
-        <div className="text-slate-400 px-4 py-3">
+        <div className="text-slate-400 px-4 py-3 hover:bg-slate-800 rounded-xl transition cursor-pointer">
           Analytics
         </div>
 
-        <div className="text-slate-400 px-4 py-3">
+        <div className="text-slate-400 px-4 py-3 hover:bg-slate-800 rounded-xl transition cursor-pointer">
           Reports
         </div>
 
