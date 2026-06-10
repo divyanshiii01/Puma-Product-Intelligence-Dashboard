@@ -1,5 +1,22 @@
 import { Link } from "react-router-dom";
+
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 export default function Home() {
+  const trendData = [
+  { month: "Jan", products: 1200 },
+  { month: "Feb", products: 1800 },
+  { month: "Mar", products: 2200 },
+  { month: "Apr", products: 2800 },
+  { month: "May", products: 3500 },
+  { month: "Jun", products: 4200 },
+];
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
 
@@ -14,10 +31,6 @@ export default function Home() {
         <h1 className="font-bold text-xl tracking-[0.4em]">
           PUMA
         </h1>
-
-        <button className="border border-slate-800 px-5 py-2 rounded-full hover:bg-white hover:text-black transition">
-          Dashboard
-        </button>
 
       </nav>
 
@@ -52,12 +65,8 @@ export default function Home() {
   to="/dashboard"
   className="px-8 py-4 rounded-full bg-white text-black font-semibold hover:scale-105 transition duration-300"
 >
-  Explore Dashboard
+  Launch Analytics
 </Link>
-
-    <button className="px-8 py-4 rounded-full border border-white/20 hover:bg-white/5 transition">
-      View Analytics
-    </button>
 
   </div>
 
@@ -74,7 +83,7 @@ export default function Home() {
             </h3>
 
             <p className="text-5xl font-bold mt-4">
-              5K+
+              10
             </p>
           </div>
 
@@ -84,7 +93,7 @@ export default function Home() {
             </h3>
 
             <p className="text-5xl font-bold mt-4">
-              28%
+              19%
             </p>
           </div>
 
@@ -94,7 +103,7 @@ export default function Home() {
             </h3>
 
             <p className="text-5xl font-bold mt-4">
-              12
+              5
             </p>
           </div>
 
@@ -123,31 +132,44 @@ export default function Home() {
 
             <div className="bg-black/30 rounded-2xl p-5">
               <p className="text-slate-400">Products</p>
-              <h3 className="text-3xl font-bold">5,421</h3>
+              <h3 className="text-3xl font-bold">10</h3>
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
               <p className="text-slate-400">Discounts</p>
-              <h3 className="text-3xl font-bold">28%</h3>
+              <h3 className="text-3xl font-bold">19%</h3>
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
               <p className="text-slate-400">Categories</p>
-              <h3 className="text-3xl font-bold">12</h3>
+              <h3 className="text-3xl font-bold">5</h3>
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
               <p className="text-slate-400">Top Rating</p>
-              <h3 className="text-3xl font-bold">4.9</h3>
+              <h3 className="text-3xl font-bold">4.6</h3>
             </div>
 
           </div>
 
-          <div className="h-64 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 flex items-center justify-center text-slate-300">
+          <div className="h-64 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 p-4">
 
-            Product Trend Chart Coming Soon
+  <ResponsiveContainer width="100%" height="100%">
+    <LineChart data={trendData}>
+      <XAxis dataKey="month" />
+      <YAxis />
+      <Tooltip />
 
-          </div>
+      <Line
+        type="monotone"
+        dataKey="products"
+        stroke="#22d3ee"
+        strokeWidth={4}
+      />
+    </LineChart>
+  </ResponsiveContainer>
+
+</div>
 
         </div>
 

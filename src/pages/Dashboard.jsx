@@ -23,22 +23,86 @@ const products = [
   {
     name: "Puma Velocity Nitro",
     category: "Running",
-    price: "₹8,999",
-    discount: "25%",
+    price: 8999,
+    discount: 25,
+    rating: 4.8,
+  },
+  {
+    name: "Puma Deviate Nitro",
+    category: "Running",
+    price: 10999,
+    discount: 20,
+    rating: 4.7,
+  },
+  {
+    name: "Puma Liberate Nitro",
+    category: "Running",
+    price: 7499,
+    discount: 15,
+    rating: 4.6,
   },
   {
     name: "Puma RS-X",
     category: "Lifestyle",
-    price: "₹7,499",
-    discount: "30%",
+    price: 7499,
+    discount: 30,
+    rating: 4.9,
   },
   {
     name: "Puma Future Rider",
     category: "Sneakers",
-    price: "₹6,999",
-    discount: "18%",
+    price: 6999,
+    discount: 18,
+    rating: 4.5,
   },
+  {
+    name: "Puma Mirage Sport",
+    category: "Sneakers",
+    price: 6499,
+    discount: 22,
+    rating: 4.4,
+  },
+  {
+    name: "Puma Softride Enzo",
+    category: "Training",
+    price: 5999,
+    discount: 12,
+    rating: 4.3,
+  },
+  {
+    name: "Puma Fuse 2.0",
+    category: "Training",
+    price: 8299,
+    discount: 15,
+    rating: 4.6,
+  },
+  {
+    name: "Puma Ultra Ultimate",
+    category: "Football",
+    price: 12999,
+    discount: 10,
+    rating: 4.9,
+  },
+  {
+    name: "Puma Future Match",
+    category: "Football",
+    price: 9999,
+    discount: 18,
+    rating: 4.7,
+  }
 ];
+const totalProducts = products.length;
+const totalCategories = [
+  ...new Set(products.map(product => product.category))
+].length;
+const averageDiscount = Math.round(
+  products.reduce((sum, product) => sum + product.discount, 0) /
+  products.length
+);
+const averageRating = (
+  products.reduce((sum, product) => sum + product.rating, 0) /
+  products.length
+).toFixed(1);
 const filteredProducts = products.filter((product) => {
   const matchesSearch =
     product.name.toLowerCase().includes(search.toLowerCase());
@@ -83,22 +147,22 @@ const filteredProducts = products.filter((product) => {
 
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-lg">
           <p className="text-slate-400">Products</p>
-          <h2 className="text-4xl font-bold mt-2">5421</h2>
+          <h2 className="text-4xl font-bold mt-2">{totalProducts}</h2>
         </div>
 
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-lg">
           <p className="text-slate-400">Discounts</p>
-          <h2 className="text-4xl font-bold mt-2">28%</h2>
+          <h2 className="text-4xl font-bold mt-2">{averageDiscount}%</h2>
         </div>
 
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-lg">
           <p className="text-slate-400">Categories</p>
-          <h2 className="text-4xl font-bold mt-2">12</h2>
+          <h2 className="text-4xl font-bold mt-2">{totalCategories}</h2>
         </div>
 
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-lg">
           <p className="text-slate-400">Rating</p>
-          <h2 className="text-4xl font-bold mt-2">4.9</h2>
+          <h2 className="text-4xl font-bold mt-2">{averageRating}</h2>
         </div>
 
       </div>
@@ -244,14 +308,14 @@ onChange={(e) => setSearch(e.target.value)}
     Top Products
   </h2>
 
-  <table className="w-full">
+  <table className="w-full table-fixed">
 
     <thead>
       <tr className="border-b border-slate-700">
-        <th className="text-left py-3">Product</th>
-        <th className="text-left py-3">Category</th>
-        <th className="text-left py-3">Price</th>
-        <th className="text-left py-3">Discount</th>
+        <th className="text-left py-3 px-4">Product</th>
+        <th className="text-left py-3 px-4">Category</th>
+        <th className="text-left py-3 px-4">Price</th>
+        <th className="text-left py-3 px-4">Discount</th>
       </tr>
     </thead>
 
@@ -264,12 +328,21 @@ onChange={(e) => setSearch(e.target.value)}
       key={product.name}
       className="border-b border-slate-800"
     >
-      <td className="py-4">{product.name}</td>
-      <td>{product.category}</td>
-      <td>{product.price}</td>
-      <td className="text-green-400">
-        {product.discount}
-      </td>
+      <td className="py-4 px-4 whitespace-nowrap">
+  {product.name}
+</td>
+
+<td className="px-4">
+  {product.category}
+</td>
+
+<td className="px-4">
+  ₹{product.price.toLocaleString()}
+</td>
+
+<td className="px-4 text-green-400 font-semibold">
+  {product.discount}%
+</td>
     </tr>
   ))}
 
