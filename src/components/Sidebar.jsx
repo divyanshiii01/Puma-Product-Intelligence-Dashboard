@@ -33,19 +33,26 @@ export default function Sidebar() {
   </Link>
 
   <Link
-    to="/analytics"
-    className="block text-slate-400 px-4 py-3 hover:bg-slate-800 rounded-xl"
-  >
-    Analytics
-  </Link>
+  to="/analytics"
+  className={`block px-4 py-3 rounded-xl ${
+    location.pathname === "/analytics"
+      ? "bg-cyan-500/20 text-cyan-400"
+      : "text-slate-400 hover:bg-slate-800"
+  }`}
+>
+  Analytics
+</Link>
 
   <Link
-    to="/reports"
-    className="block text-slate-400 px-4 py-3 hover:bg-slate-800 rounded-xl"
-  >
-    Reports
-  </Link>
-
+  to="/reports"
+  className={`block px-4 py-3 rounded-xl ${
+    location.pathname === "/reports"
+      ? "bg-cyan-500/20 text-cyan-400"
+      : "text-slate-400 hover:bg-slate-800"
+  }`}
+>
+  Reports
+</Link>
 </div>
 
     </div>
