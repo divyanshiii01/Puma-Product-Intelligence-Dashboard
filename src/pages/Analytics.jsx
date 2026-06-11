@@ -200,7 +200,7 @@ const categorySummary = Object.entries(
 
         <Bar
           dataKey="price"
-          fill="#a855f7"
+          fill="#ec4899"
           radius={[8, 8, 0, 0]}
         />
 

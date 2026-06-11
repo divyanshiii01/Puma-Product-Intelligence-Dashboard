@@ -1,3 +1,4 @@
+import products from "../data/products";
 import { Link } from "react-router-dom";
 
 import {
@@ -17,6 +18,26 @@ export default function Home() {
   { month: "May", products: 3500 },
   { month: "Jun", products: 4200 },
 ];
+const totalProducts = products.length;
+
+const totalCategories = [
+  ...new Set(products.map(product => product.category))
+].length;
+
+const averageDiscount = Math.round(
+  products.reduce(
+    (sum, product) => sum + product.discount,
+    0
+  ) / products.length
+);
+
+const averageRating = (
+  products.reduce(
+    (sum, product) => sum + product.rating,
+    0
+  ) / products.length
+).toFixed(1);
+
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
 
@@ -43,13 +64,15 @@ export default function Home() {
 
   <h1 className="mt-8 text-7xl md:text-8xl font-bold max-w-6xl leading-[0.95]">
 
-    Understand The Story
+  Understand The
 
-    <br />
+  <br />
 
-    Behind Every Product
+  <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+    Story Behind Every Product
+  </span>
 
-  </h1>
+</h1>
 
   <p className="mt-8 text-slate-400 max-w-3xl text-xl leading-relaxed">
 
@@ -83,7 +106,7 @@ export default function Home() {
             </h3>
 
             <p className="text-5xl font-bold mt-4">
-              10
+              {totalProducts}
             </p>
           </div>
 
@@ -93,7 +116,7 @@ export default function Home() {
             </h3>
 
             <p className="text-5xl font-bold mt-4">
-              19%
+              {averageDiscount}
             </p>
           </div>
 
@@ -103,7 +126,7 @@ export default function Home() {
             </h3>
 
             <p className="text-5xl font-bold mt-4">
-              5
+              {totalCategories}
             </p>
           </div>
 
@@ -132,21 +155,21 @@ export default function Home() {
 
             <div className="bg-black/30 rounded-2xl p-5">
               <p className="text-slate-400">Products</p>
-              <h3 className="text-3xl font-bold">10</h3>
+              <h3 className="text-3xl font-bold">{totalProducts}</h3>
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
               <p className="text-slate-400">Discounts</p>
-              <h3 className="text-3xl font-bold">19%</h3>
+              <h3 className="text-3xl font-bold">{averageDiscount}%</h3>
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
-              <p className="text-slate-400">Categories</p>
+              <p className="text-slate-400">{totalCategories}</p>
               <h3 className="text-3xl font-bold">5</h3>
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
-              <p className="text-slate-400">Top Rating</p>
+              <p className="text-slate-400">{averageRating}</p>
               <h3 className="text-3xl font-bold">4.6</h3>
             </div>
 

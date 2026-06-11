@@ -1,3 +1,4 @@
+import products from "../data/products";
 import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import {
@@ -19,78 +20,7 @@ export default function Dashboard() {
   { month: "May", products: 3500 },
   { month: "Jun", products: 4200 },
 ];
-const products = [
-  {
-    name: "Puma Velocity Nitro",
-    category: "Running",
-    price: 8999,
-    discount: 25,
-    rating: 4.8,
-  },
-  {
-    name: "Puma Deviate Nitro",
-    category: "Running",
-    price: 10999,
-    discount: 20,
-    rating: 4.7,
-  },
-  {
-    name: "Puma Liberate Nitro",
-    category: "Running",
-    price: 7499,
-    discount: 15,
-    rating: 4.6,
-  },
-  {
-    name: "Puma RS-X",
-    category: "Lifestyle",
-    price: 7499,
-    discount: 30,
-    rating: 4.9,
-  },
-  {
-    name: "Puma Future Rider",
-    category: "Sneakers",
-    price: 6999,
-    discount: 18,
-    rating: 4.5,
-  },
-  {
-    name: "Puma Mirage Sport",
-    category: "Sneakers",
-    price: 6499,
-    discount: 22,
-    rating: 4.4,
-  },
-  {
-    name: "Puma Softride Enzo",
-    category: "Training",
-    price: 5999,
-    discount: 12,
-    rating: 4.3,
-  },
-  {
-    name: "Puma Fuse 2.0",
-    category: "Training",
-    price: 8299,
-    discount: 15,
-    rating: 4.6,
-  },
-  {
-    name: "Puma Ultra Ultimate",
-    category: "Football",
-    price: 12999,
-    discount: 10,
-    rating: 4.9,
-  },
-  {
-    name: "Puma Future Match",
-    category: "Football",
-    price: 9999,
-    discount: 18,
-    rating: 4.7,
-  }
-];
+
 const totalProducts = products.length;
 const totalCategories = [
   ...new Set(products.map(product => product.category))
@@ -103,6 +33,28 @@ const averageRating = (
   products.reduce((sum, product) => sum + product.rating, 0) /
   products.length
 ).toFixed(1);
+
+const categoryDistribution = Object.entries(
+  products.reduce((acc, product) => {
+    acc[product.category] =
+      (acc[product.category] || 0) + 1;
+
+    return acc;
+  }, {})
+).map(([category, count]) => ({
+  category,
+  percentage: Math.round(
+    (count / products.length) * 100
+  ),
+}));
+
+const recentActivity = [
+  `Tracking ${totalProducts} products`,
+  `Average discount is ${averageDiscount}%`,
+  `${totalCategories} categories monitored`,
+  `Average rating is ${averageRating}`,
+];
+
 const filteredProducts = products.filter((product) => {
   const matchesSearch =
     product.name.toLowerCase().includes(search.toLowerCase());
@@ -188,7 +140,7 @@ const filteredProducts = products.filter((product) => {
         <Line
           type="monotone"
           dataKey="products"
-          stroke="#22d3ee"
+          stroke="#34d399"
           strokeWidth={4}
         />
 
@@ -205,45 +157,46 @@ const filteredProducts = products.filter((product) => {
   <div className="bg-slate-900 rounded-3xl p-6 border border-slate-800">
 
     <h2 className="text-2xl font-bold mb-4">
-      Category Distribution
-    </h2>
-
+  Category Distribution
+</h2>
     <div className="space-y-4">
 
-      <div>
-        <div className="flex justify-between mb-1">
-          <span>Running</span>
-          <span>45%</span>
-        </div>
+  {categoryDistribution.map((category, index) => (
 
-        <div className="bg-slate-800 h-3 rounded-full">
-          <div className="bg-cyan-400 h-3 rounded-full w-[45%]"></div>
-        </div>
+    <div key={category.category}>
+
+      <div className="flex justify-between mb-1">
+
+        <span>{category.category}</span>
+
+        <span>{category.percentage}%</span>
+
       </div>
 
-      <div>
-        <div className="flex justify-between mb-1">
-          <span>Lifestyle</span>
-          <span>30%</span>
-        </div>
+      <div className="bg-slate-800 h-3 rounded-full">
 
-        <div className="bg-slate-800 h-3 rounded-full">
-          <div className="bg-purple-400 h-3 rounded-full w-[30%]"></div>
-        </div>
-      </div>
+        <div
+  className={`h-3 rounded-full ${
+    [
+      "bg-cyan-400",
+      "bg-purple-400",
+      "bg-pink-400",
+      "bg-green-400",
+      "bg-orange-400",
+    ][index % 6]
+  }`}
+  style={{
+    width: `${category.percentage}%`
+  }}
+/>
 
-      <div>
-        <div className="flex justify-between mb-1">
-          <span>Training</span>
-          <span>25%</span>
-        </div>
-
-        <div className="bg-slate-800 h-3 rounded-full">
-          <div className="bg-pink-400 h-3 rounded-full w-[25%]"></div>
-        </div>
       </div>
 
     </div>
+
+  ))}
+
+</div>
 
   </div>
 
@@ -255,19 +208,26 @@ const filteredProducts = products.filter((product) => {
 
     <div className="space-y-4">
 
-      <div className="border-l-2 border-cyan-400 pl-4">
-        New Running collection added
-      </div>
+  {recentActivity.map((activity, index) => {
 
-      <div className="border-l-2 border-purple-400 pl-4">
-        Discount campaign launched
-      </div>
+  const colors = [
+    "border-cyan-400",
+    "border-purple-400",
+    "border-pink-400",
+    "border-green-400",
+  ];
 
-      <div className="border-l-2 border-pink-400 pl-4">
-        Product ratings updated
-      </div>
-
+  return (
+    <div
+      key={index}
+      className={`border-l-2 ${colors[index % colors.length]} pl-4`}
+    >
+      {activity}
     </div>
+  );
+})}
+
+</div>
 
   </div>
 

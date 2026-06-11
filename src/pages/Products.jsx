@@ -123,7 +123,7 @@ const mostExpensiveProduct = products.reduce(
 
         <Bar
           dataKey="count"
-          fill="#22d3ee"
+          fill="#a855f7"
           radius={[8, 8, 0, 0]}
         />
 
