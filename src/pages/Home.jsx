@@ -1,4 +1,5 @@
-import products from "../data/products";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 import {
@@ -10,6 +11,18 @@ import {
   ResponsiveContainer,
 } from "recharts";
 export default function Home() {
+  const [products, setProducts] = useState([]);
+
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/api/products")
+    .then((response) => {
+      setProducts(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
   const trendData = [
   { month: "Jan", products: 1200 },
   { month: "Feb", products: 1800 },
@@ -24,19 +37,25 @@ const totalCategories = [
   ...new Set(products.map(product => product.category))
 ].length;
 
-const averageDiscount = Math.round(
-  products.reduce(
-    (sum, product) => sum + product.discount,
-    0
-  ) / products.length
-);
+const averageDiscount =
+  products.length > 0
+    ? Math.round(
+        products.reduce(
+          (sum, product) => sum + product.discount,
+          0
+        ) / products.length
+      )
+    : 0;
 
-const averageRating = (
-  products.reduce(
-    (sum, product) => sum + product.rating,
-    0
-  ) / products.length
-).toFixed(1);
+const averageRating =
+  products.length > 0
+    ? (
+        products.reduce(
+          (sum, product) => sum + product.rating,
+          0
+        ) / products.length
+      ).toFixed(1)
+    : "0";
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
@@ -116,7 +135,7 @@ const averageRating = (
             </h3>
 
             <p className="text-5xl font-bold mt-4">
-              {averageDiscount}
+              {averageDiscount}%
             </p>
           </div>
 
@@ -159,18 +178,18 @@ const averageRating = (
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
-              <p className="text-slate-400">Discounts</p>
+              <p className="text-slate-400">Avg Discount</p>
               <h3 className="text-3xl font-bold">{averageDiscount}%</h3>
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
-              <p className="text-slate-400">{totalCategories}</p>
-              <h3 className="text-3xl font-bold">5</h3>
+              <p className="text-slate-400">Categories</p>
+              <h3 className="text-3xl font-bold">{totalCategories}</h3>
             </div>
 
             <div className="bg-black/30 rounded-2xl p-5">
-              <p className="text-slate-400">{averageRating}</p>
-              <h3 className="text-3xl font-bold">4.6</h3>
+              <p className="text-slate-400">Avg Rating</p>
+              <h3 className="text-3xl font-bold">{averageRating}</h3>
             </div>
 
           </div>

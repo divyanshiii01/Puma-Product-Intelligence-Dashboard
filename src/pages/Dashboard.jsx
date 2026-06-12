@@ -1,5 +1,5 @@
-import products from "../data/products";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import {
   LineChart,
@@ -12,6 +12,20 @@ import {
 export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Categories");
+
+const [products, setProducts] = useState([]);
+
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/api/products")
+    .then((response) => {
+      setProducts(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
+
     const data = [
   { month: "Jan", products: 1200 },
   { month: "Feb", products: 1800 },
@@ -20,6 +34,7 @@ export default function Dashboard() {
   { month: "May", products: 3500 },
   { month: "Jun", products: 4200 },
 ];
+
 
 const totalProducts = products.length;
 const totalCategories = [

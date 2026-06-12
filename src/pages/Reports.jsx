@@ -1,26 +1,56 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import products from "../data/products";
 
 export default function Reports() {
+  const [products, setProducts] = useState([]);
+
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/api/products")
+    .then((response) => {
+      setProducts(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
   const totalProducts = products.length;
 
-  const averageRating = (
-    products.reduce((sum, product) => sum + product.rating, 0) /
-    products.length
-  ).toFixed(1);
+  const averageRating =
+  products.length > 0
+    ? (
+        products.reduce(
+          (sum, product) => sum + product.rating,
+          0
+        ) / products.length
+      ).toFixed(1)
+    : "0";
 
-  const averageDiscount = Math.round(
-    products.reduce((sum, product) => sum + product.discount, 0) /
-    products.length
-  );
+  const averageDiscount =
+  products.length > 0
+    ? Math.round(
+        products.reduce(
+          (sum, product) => sum + product.discount,
+          0
+        ) / products.length
+      )
+    : 0;
 
-  const topRatedProduct = [...products].sort(
-    (a, b) => b.rating - a.rating
-  )[0];
+  const topRatedProduct =
+  products.length > 0
+    ? [...products].sort(
+        (a, b) => b.rating - a.rating
+      )[0]
+    : null;
 
-  const highestDiscountProduct = [...products].sort(
-    (a, b) => b.discount - a.discount
-  )[0];
+  const highestDiscountProduct =
+  products.length > 0
+    ? [...products].sort(
+        (a, b) => b.discount - a.discount
+      )[0]
+    : null;
+
 const categoryPerformance = Object.entries(
   products.reduce((acc, product) => {
     if (!acc[product.category]) {
@@ -42,9 +72,13 @@ const categoryPerformance = Object.entries(
   ).toFixed(1),
 }));
 
-const bestCategory = [...categoryPerformance].sort(
-  (a, b) => b.rating - a.rating
-)[0];
+const bestCategory =
+  categoryPerformance.length > 0
+    ? [...categoryPerformance].sort(
+        (a, b) => b.rating - a.rating
+      )[0]
+    : null;
+    
   return (
     <div className="min-h-screen bg-slate-950 text-white flex">
 
@@ -85,7 +119,7 @@ const bestCategory = [...categoryPerformance].sort(
   <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
     <p className="text-slate-400">Top Product</p>
     <h2 className="text-xl font-bold mt-2">
-      {topRatedProduct.name}
+      {topRatedProduct?.name}
     </h2>
   </div>
 
@@ -99,11 +133,11 @@ const bestCategory = [...categoryPerformance].sort(
     </h3>
 
     <p className="text-slate-400 mt-3">
-      {topRatedProduct.name}
+      {topRatedProduct?.name}
     </p>
 
     <p className="text-cyan-400 mt-2">
-      Rating: {topRatedProduct.rating}
+      Rating: {topRatedProduct?.rating}
     </p>
 
   </div>
@@ -115,11 +149,11 @@ const bestCategory = [...categoryPerformance].sort(
     </h3>
 
     <p className="text-slate-400 mt-3">
-      {highestDiscountProduct.name}
+      {highestDiscountProduct?.name}
     </p>
 
     <p className="text-green-400 mt-2">
-      {highestDiscountProduct.discount}% Off
+      {highestDiscountProduct?.discount}% Off
     </p>
 
   </div>
@@ -131,11 +165,11 @@ const bestCategory = [...categoryPerformance].sort(
     </h3>
 
     <p className="text-slate-400 mt-3">
-      {bestCategory.category}
+      {bestCategory?.category}
     </p>
 
     <p className="text-purple-400 mt-2">
-      Rating: {bestCategory.rating}
+      Rating: {bestCategory?.rating}
     </p>
 
   </div>

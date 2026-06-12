@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import products from "../data/products";
 import {
   BarChart,
   Bar,
@@ -13,8 +13,18 @@ import {
 export default function Products() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Categories");
-
+const [products, setProducts] = useState([]);
   
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/api/products")
+    .then((response) => {
+      setProducts(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
@@ -38,20 +48,29 @@ const categoryData = Object.entries(
   count,
 }));
 
-const topRatedProduct = products.reduce(
-  (best, current) =>
-    current.rating > best.rating ? current : best
-);
+const topRatedProduct =
+  products.length > 0
+    ? products.reduce(
+        (best, current) =>
+          current.rating > best.rating ? current : best
+      )
+    : null;
 
-const highestDiscountProduct = products.reduce(
-  (best, current) =>
-    current.discount > best.discount ? current : best
-);
+const highestDiscountProduct =
+  products.length > 0
+    ? products.reduce(
+        (best, current) =>
+          current.discount > best.discount ? current : best
+      )
+    : null;
 
-const mostExpensiveProduct = products.reduce(
-  (best, current) =>
-    current.price > best.price ? current : best
-);
+const mostExpensiveProduct =
+  products.length > 0
+    ? products.reduce(
+        (best, current) =>
+          current.price > best.price ? current : best
+      )
+    : null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex">
@@ -144,11 +163,11 @@ const mostExpensiveProduct = products.reduce(
     </p>
 
     <h3 className="text-xl font-bold">
-      {topRatedProduct.name}
+      {topRatedProduct?.name}
     </h3>
 
     <p className="text-yellow-400 mt-2">
-      ⭐ {topRatedProduct.rating}
+      ⭐ {topRatedProduct?.rating}
     </p>
 
   </div>
@@ -160,11 +179,11 @@ const mostExpensiveProduct = products.reduce(
     </p>
 
     <h3 className="text-xl font-bold">
-      {highestDiscountProduct.name}
+      {highestDiscountProduct?.name}
     </h3>
 
     <p className="text-green-400 mt-2">
-      {highestDiscountProduct.discount}%
+      {highestDiscountProduct?.discount}%
     </p>
 
   </div>
@@ -176,11 +195,11 @@ const mostExpensiveProduct = products.reduce(
     </p>
 
     <h3 className="text-xl font-bold">
-      {mostExpensiveProduct.name}
+      {mostExpensiveProduct?.name}
     </h3>
 
     <p className="text-cyan-400 mt-2">
-      ₹{mostExpensiveProduct.price.toLocaleString()}
+      ₹{mostExpensiveProduct?.price.toLocaleString()}
     </p>
 
   </div>

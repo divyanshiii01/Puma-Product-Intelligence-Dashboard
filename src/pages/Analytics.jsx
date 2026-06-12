@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import products from "../data/products";
 import {
   BarChart,
   Bar,
@@ -10,22 +11,50 @@ import {
 } from "recharts";
 
 export default function Analytics() {
+  const [products, setProducts] = useState([]);
+
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/api/products")
+    .then((response) => {
+      setProducts(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
     const totalProducts = products.length;
 
-const averagePrice = Math.round(
-  products.reduce((sum, product) => sum + product.price, 0) /
-  products.length
-);
+const averagePrice =
+  products.length > 0
+    ? Math.round(
+        products.reduce(
+          (sum, product) => sum + product.price,
+          0
+        ) / products.length
+      )
+    : 0;
 
-const averageDiscount = Math.round(
-  products.reduce((sum, product) => sum + product.discount, 0) /
-  products.length
-);
+const averageDiscount =
+  products.length > 0
+    ? Math.round(
+        products.reduce(
+          (sum, product) => sum + product.discount,
+          0
+        ) / products.length
+      )
+    : 0;
 
-const averageRating = (
-  products.reduce((sum, product) => sum + product.rating, 0) /
-  products.length
-).toFixed(1);
+const averageRating =
+  products.length > 0
+    ? (
+        products.reduce(
+          (sum, product) => sum + product.rating,
+          0
+        ) / products.length
+      ).toFixed(1)
+    : "0";
+
 const ratingByCategory = Object.entries(
   products.reduce((acc, product) => {
     if (!acc[product.category]) {
@@ -66,17 +95,27 @@ const priceByCategory = Object.entries(
     data.totalPrice / data.count
   ),
 }));
-const highestRatedCategory = [...ratingByCategory].sort(
-  (a, b) => b.rating - a.rating
-)[0];
+const highestRatedCategory =
+  ratingByCategory.length > 0
+    ? [...ratingByCategory].sort(
+        (a, b) => b.rating - a.rating
+      )[0]
+    : null;
 
-const mostExpensiveCategory = [...priceByCategory].sort(
-  (a, b) => b.price - a.price
-)[0];
+const mostExpensiveCategory =
+  priceByCategory.length > 0
+    ? [...priceByCategory].sort(
+        (a, b) => b.price - a.price
+      )[0]
+    : null;
 
-const highestDiscountProduct = [...products].sort(
-  (a, b) => b.discount - a.discount
-)[0];
+const highestDiscountProduct =
+  products.length > 0
+    ? [...products].sort(
+        (a, b) => b.discount - a.discount
+      )[0]
+    : null;
+
 const categorySummary = Object.entries(
   products.reduce((acc, product) => {
     if (!acc[product.category]) {
@@ -220,11 +259,11 @@ const categorySummary = Object.entries(
     </p>
 
     <h3 className="text-2xl font-bold mt-3">
-      ⭐ {highestRatedCategory.category}
+      ⭐ {highestRatedCategory?.category}
     </h3>
 
     <p className="text-cyan-400 mt-2">
-      Rating: {highestRatedCategory.rating}
+      Rating: {highestRatedCategory?.rating}
     </p>
 
   </div>
@@ -236,11 +275,11 @@ const categorySummary = Object.entries(
     </p>
 
     <h3 className="text-2xl font-bold mt-3">
-      💰 {mostExpensiveCategory.category}
+      💰 {mostExpensiveCategory?.category}
     </h3>
 
     <p className="text-purple-400 mt-2">
-      ₹{mostExpensiveCategory.price.toLocaleString()}
+      ₹{mostExpensiveCategory?.price.toLocaleString()}
     </p>
 
   </div>
@@ -252,11 +291,11 @@ const categorySummary = Object.entries(
     </p>
 
     <h3 className="text-2xl font-bold mt-3">
-      🔥 {highestDiscountProduct.name}
+      🔥 {highestDiscountProduct?.name}
     </h3>
 
     <p className="text-green-400 mt-2">
-      {highestDiscountProduct.discount}% Off
+      {highestDiscountProduct?.discount}% Off
     </p>
 
   </div>

@@ -1,6 +1,7 @@
-const products = [
-  {
-    name: "Puma Velocity Nitro",
+const getProducts = (req, res) => {
+  res.json([
+    {
+      name: "Puma Velocity Nitro",
     category: "Running",
     price: 8999,
     discount: 25,
@@ -68,7 +69,10 @@ const products = [
     price: 9999,
     discount: 18,
     rating: 4.7,
-  }
-];
+  },
+  ]);
+};
 
-export default products;
+module.exports = {
+  getProducts,
+};
