@@ -23,13 +23,27 @@ useEffect(() => {
       console.log(error);
     });
 }, []);
-  const trendData = [
-  { month: "Jan", products: 1200 },
-  { month: "Feb", products: 1800 },
-  { month: "Mar", products: 2200 },
-  { month: "Apr", products: 2800 },
-  { month: "May", products: 3500 },
-  { month: "Jun", products: 4200 },
+ const trendData = [
+  {
+    range: "0-5000",
+    count: products.filter((p) => p.price <= 5000).length,
+  },
+  {
+    range: "5001-8000",
+    count: products.filter(
+      (p) => p.price > 5000 && p.price <= 8000
+    ).length,
+  },
+  {
+    range: "8001-11000",
+    count: products.filter(
+      (p) => p.price > 8000 && p.price <= 11000
+    ).length,
+  },
+  {
+    range: "11000+",
+    count: products.filter((p) => p.price > 11000).length,
+  },
 ];
 const totalProducts = products.length;
 
@@ -161,7 +175,7 @@ const averageRating =
           <div className="flex justify-between items-center mb-8">
 
             <h2 className="text-3xl font-bold">
-              Analytics Overview
+              Price Distribution Overview
             </h2>
 
             <span className="text-green-400">
@@ -198,13 +212,13 @@ const averageRating =
 
   <ResponsiveContainer width="100%" height="100%">
     <LineChart data={trendData}>
-      <XAxis dataKey="month" />
+      <XAxis dataKey="range" />
       <YAxis />
       <Tooltip />
 
       <Line
         type="monotone"
-        dataKey="products"
+        dataKey="count"
         stroke="#22d3ee"
         strokeWidth={4}
       />

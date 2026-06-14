@@ -27,14 +27,37 @@ useEffect(() => {
 }, []);
 
     const data = [
-  { month: "Jan", products: 1200 },
-  { month: "Feb", products: 1800 },
-  { month: "Mar", products: 2200 },
-  { month: "Apr", products: 2800 },
-  { month: "May", products: 3500 },
-  { month: "Jun", products: 4200 },
+  {
+    discount: "0-10%",
+    count: products.filter(
+      (p) => p.discount >= 0 && p.discount <= 10
+    ).length,
+  },
+  {
+    discount: "11-20%",
+    count: products.filter(
+      (p) => p.discount > 10 && p.discount <= 20
+    ).length,
+  },
+  {
+    discount: "21-30%",
+    count: products.filter(
+      (p) => p.discount > 20 && p.discount <= 30
+    ).length,
+  },
+  {
+    discount: "31-40%",
+    count: products.filter(
+      (p) => p.discount > 30 && p.discount <= 40
+    ).length,
+  },
+  {
+    discount: "40%+",
+    count: products.filter(
+      (p) => p.discount > 40
+    ).length,
+  },
 ];
-
 
 const totalProducts = products.length;
 const totalCategories = [
@@ -137,7 +160,7 @@ const filteredProducts = products.filter((product) => {
       <div className="mt-10 bg-slate-900 rounded-3xl p-8 border border-slate-800">
 
   <h2 className="text-2xl font-bold mb-6">
-    Product Growth Trend
+    Discount Distribution
   </h2>
 
   <div className="h-96">
@@ -146,7 +169,7 @@ const filteredProducts = products.filter((product) => {
 
       <LineChart data={data}>
 
-        <XAxis dataKey="month" />
+        <XAxis dataKey="discount" />
 
         <YAxis />
 
@@ -154,7 +177,7 @@ const filteredProducts = products.filter((product) => {
 
         <Line
           type="monotone"
-          dataKey="products"
+          dataKey="count"
           stroke="#34d399"
           strokeWidth={4}
         />
