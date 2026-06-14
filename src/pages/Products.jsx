@@ -25,6 +25,25 @@ useEffect(() => {
       console.log(error);
     });
 }, []);
+const addToWishlist = async (product) => {
+  try {
+    await axios.post(
+      "https://puma-analytics-dashboard-production.up.railway.app/api/wishlist",
+      {
+        productId: product._id,
+        name: product.name,
+        category: product.category,
+        price: product.price,
+        discount: product.discount,
+        rating: product.rating,
+      }
+    );
+
+    alert(`${product.name} added to wishlist ❤️`);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
@@ -249,6 +268,9 @@ const mostExpensiveProduct =
         <th className="text-left py-3 px-4">Price</th>
         <th className="text-left py-3 px-4">Discount</th>
         <th className="text-left py-3 px-4">Rating</th>
+        <th className="text-left py-3 px-4">
+  Wishlist
+</th>
       </tr>
     </thead>
 
@@ -277,6 +299,14 @@ const mostExpensiveProduct =
 
           <td className="px-4 text-yellow-400 font-semibold whitespace-nowrap">
   ⭐ {product.rating}
+</td>
+<td className="px-4">
+  <button
+    onClick={() => addToWishlist(product)}
+    className="text-red-500 text-2xl hover:scale-110 transition"
+  >
+    ❤️
+  </button>
 </td>
         </tr>
       ))}

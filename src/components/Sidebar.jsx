@@ -53,6 +53,17 @@ export default function Sidebar() {
 >
   Reports
 </Link>
+
+<Link
+  to="/wishlist"
+  className={`block px-4 py-3 rounded-xl ${
+    location.pathname === "/wishlist"
+      ? "bg-cyan-500/20 text-cyan-400"
+      : "text-slate-400 hover:bg-slate-800"
+  }`}
+>
+  ❤️ Wishlist
+</Link>
 </div>
 
     </div>
