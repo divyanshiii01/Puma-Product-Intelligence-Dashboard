@@ -7,7 +7,7 @@ export default function Reports() {
 
 useEffect(() => {
   axios
-    .get("http://localhost:5000/api/products")
+    .get("https://puma-analytics-dashboard-production.up.railway.app/api/products")
     .then((response) => {
       setProducts(response.data);
     })
